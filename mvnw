@@ -43,10 +43,13 @@ esac
 
 # set JAVACMD and JAVACCMD
 set_java_home() {
+  
   # For Cygwin and MinGW, ensure paths are in Unix format before anything is touched
   if [ -n "${JAVA_HOME-}" ]; then
     if [ -x "$JAVA_HOME/jre/sh/java" ]; then
       # IBM's JDK on AIX uses strange locations for the executables
+      # Just before the section where JAVACMD is set
+export JAVA_HOME="/usr/lib/jvm/java-21-openjdk"
       JAVACMD="$JAVA_HOME/jre/sh/java"
       JAVACCMD="$JAVA_HOME/jre/sh/javac"
     else
