@@ -24,6 +24,13 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.security.access.annotation.Secured;
+import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.html.Anchor;  
+import com.vaadin.flow.component.tabs.Tab;    
+import com.vaadin.flow.component.tabs.Tabs;   
+
+
+
 
 
 import java.util.List;
@@ -45,6 +52,7 @@ public class MainView extends VerticalLayout {
     private final TextField firstNameField = new TextField("First Name");
     private final TextField lastNameField = new TextField("Last Name");
     private final Button saveButton = new Button("Save Person");
+    private final IntegerField ageField = new IntegerField("Age");
 
     private final TextField nameFilterField = new TextField("Filter by Name");
     private final TextField cityFilterField = new TextField("Filter by City");
@@ -84,39 +92,36 @@ public class MainView extends VerticalLayout {
     }
 
     private Div createHeader() {
-        return new Div(); // can be extended later
+        return new Div(); 
     }
 
     private Div createNavigationBar() {
         Div navBar = new Div();
         navBar.addClassName("custom-nav-bar");
         navBar.setWidthFull();
-
+    
         Div navContent = new Div();
         navContent.addClassName("custom-nav-content");
-
+    
         H1 title = new H1("Vaadin Health App");
         title.addClassName("custom-nav-title");
-
+    
+     
         Tabs tabs = new Tabs(
-            new Tab("Home"),
-            new Tab("About"),
-            new Tab("Contact")
+            new Tab(new Anchor("/main", "Home")),  
+            new Tab(new Anchor("/about", "About")) 
         );
-
-        tabs.addSelectedChangeListener(event -> {
-            // Tab switching logic if needed
-        });
-
+    
         navContent.add(title, tabs);
         navBar.add(navContent);
         return navBar;
     }
+    
 
     private Div createFooter() {
         Div footer = new Div();
         footer.addClassName("footer");
-        footer.add("© 2025 My SPA App. All rights reserved.");
+        footer.add("©Kouluhomma");
         return footer;
     }
 
@@ -126,7 +131,7 @@ public class MainView extends VerticalLayout {
         mainContent.setWidthFull();
 
         FormLayout formLayout = new FormLayout(
-            streetField, cityField, postalCodeField, firstNameField, lastNameField, saveButton
+            streetField, cityField, postalCodeField, firstNameField, lastNameField,ageField, saveButton
         );
 
         saveButton.addClickListener(event -> saveAddress());
@@ -215,6 +220,7 @@ public class MainView extends VerticalLayout {
     private void saveAddress() {
         String firstName = firstNameField.getValue();
         String lastName = lastNameField.getValue();
+        Integer age = ageField.getValue();
 
         Person person = personRepository.findByFirstNameAndLastName(firstName, lastName);
         if (person == null) {
